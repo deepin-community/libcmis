@@ -1,0 +1,13 @@
+diff --git a/Makefile.am b/Makefile.am
+index 3c1de92..f6d794f 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -15,7 +15,7 @@ pkgconfigdir = $(libdir)/pkgconfig
+ 
+ if ENABLE_MAN
+ cmis-client.1: doc/cmis-client.xml
+-	$(DOCBOOK2MAN) $<
++	$(DOCBOOK2MAN) $< > $@
+ 
+ man_MANS = cmis-client.1
+ endif

@@ -1,0 +1,5 @@
+#! /usr/bin/dh-exec
+debian/tmp/usr/include/*
+debian/tmp/usr/lib/*/lib*.a
+debian/tmp/usr/lib/*/lib*.so
+libcmis*pc usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig

@@ -1,0 +1,22 @@
+Description: Move include outside of "extern C" block
+Author: Iain Lane <laney@ubuntu.com>
+Bug-Upstream: https://unicode-org.atlassian.net/browse/ICU-20530
+Forwarded: https://github.com/tdf/libcmis/issues/35
+
+--- libcmis-0.5.2.orig/inc/libcmis-c/repository.h
++++ libcmis-0.5.2/inc/libcmis-c/repository.h
+@@ -28,12 +28,12 @@
+ #ifndef _REPOSITORY_H_
+ #define _REPOSITORY_H_
+ 
++#include <libxml/tree.h>
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+ 
+-#include <libxml/tree.h>
+-
+ #include "libcmis-c/libcmis-c-api.h"
+ #include "libcmis-c/types.h"
+ 

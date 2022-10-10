@@ -1,0 +1,2 @@
+fix-docbook-to-man-call.diff
+include-libxml-headers-outside-of-extern-c.diff

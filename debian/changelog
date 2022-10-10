@@ -1,0 +1,205 @@
+libcmis (0.5.2-3) unstable; urgency=medium
+
+  * depend on libcmis-dev (closes: #982859)
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 16 Feb 2021 20:03:30 +0100
+
+libcmis (0.5.2-2) unstable; urgency=medium
+
+  * add patch to move include outside of "extern C" block to fix build
+    with ICU 64.1, thanks Iain Lane (closes: #956115)
+
+ -- Rene Engelhard <rene@debian.org>  Mon, 13 Apr 2020 18:11:03 +0200
+
+libcmis (0.5.2-1) unstable; urgency=medium
+
+  * New upstream version 0.5.2
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 28 Dec 2018 19:06:29 +0000
+
+libcmis (0.5.2~git20181201-2) unstable; urgency=medium
+
+  * add properly-encode-oauth2-credentials.diff: as name says, from LO/github
+    MR #25
+
+ -- Rene Engelhard <rene@rene-engelhard.de>  Tue, 11 Dec 2018 19:16:29 +0100
+
+libcmis (0.5.2~git20181201-1) unstable; urgency=medium
+
+  * New upstream snapshot 0.5.2~git20181201
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 07 Dec 2018 18:02:28 +0100
+
+libcmis (0.5.1+git20160603-3) unstable; urgency=medium
+
+  * [38d0b77] move Maintainer: to Debian LibreOffice Maintainers
+  * [e1f40fe] multiarchify
+
+ -- Rene Engelhard <rene@debian.org>  Wed, 07 Sep 2016 08:09:36 +0200
+
+libcmis (0.5.1+git20160603-2) unstable; urgency=medium
+
+  * improve Description; spell out Enterprise Content Management and
+    mention Google Drive/OneDrive/SharePoint (closes: #834933)
+
+ -- Rene Engelhard <rene@debian.org>  Sat, 20 Aug 2016 21:09:46 +0200
+
+libcmis (0.5.1+git20160603-1) unstable; urgency=medium
+
+  * new upstream snapshot (20160603)
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 05 Aug 2016 18:42:06 +0200
+
+libcmis (0.5.1-4) unstable; urgency=medium
+
+  * add complete upstream patch including tests for Google Drive fix.
+    re-enable the tests 
+
+ -- Rene Engelhard <rene@debian.org>  Wed, 04 May 2016 21:35:28 +0200
+
+libcmis (0.5.1-3) unstable; urgency=medium
+
+  * add patch from LibreOffice master to fix Google Drive login 
+  * temporarily disable the tests given it's known for now they don't
+    pass with above patch 
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 03 May 2016 21:56:57 +0200
+
+libcmis (0.5.1-2) unstable; urgency=medium
+
+  * of course we should keep the cppunit build-dep, just revert the
+    *version bump*...
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 04 Mar 2016 19:36:12 +0100
+
+libcmis (0.5.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * remove build-dep bump on cpppunit, gthe transition is over
+    (closes: #816642) 
+  * update Homepage:/Source:
+  * add debian/watch
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 04 Mar 2016 19:00:58 +0100
+
+libcmis (0.5.0-4) unstable; urgency=medium
+
+  * add missed build-dependency on docbook-xml; use docbook2x(-man)
+    instead of docbook-to-man (closes: #798632)
+  * merge package cleanup patch (closes: #798633)
+    - Bump the standards version.
+    - Remove cruft in the debian directory.
+    - Enable parallel builds.
+    - Stop building with -O0 on armhf.
+    - Really use dpkg-buildflags. 
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 18 Sep 2015 13:24:01 +0200
+
+libcmis (0.5.0-3) unstable; urgency=medium
+
+  * libstdc++6 transition: rename libcmis-0.5-5 to libcmis-0.5-5v5.
+  * bump libcppunit-dev build-dep
+
+  * merge from Ubuntu:
+    - Add avoid-use-after-delete.patch to fix test-failure
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 04 Aug 2015 14:00:05 +0000
+
+libcmis (0.5.0-2) unstable; urgency=low
+
+  * update boost.m4 to fix build with gcc-5 (closes: #777942)
+
+ -- Rene Engelhard <rene@debian.org>  Sun, 05 Apr 2015 08:42:39 +0200
+
+libcmis (0.5.0-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 16 Dec 2014 11:05:10 +0100
+
+libcmis (0.4.1-7) unstable; urgency=low
+
+  * use dh-autoreconf (closes: #748863)
+
+ -- Rene Engelhard <rene@debian.org>  Mon, 26 May 2014 20:29:05 +0200
+
+libcmis (0.4.1-6) unstable; urgency=low
+
+  * explicitly build-depend on pkg-config. No idea why it worked before... 
+
+ -- Rene Engelhard <rene@debian.org>  Thu, 08 May 2014 14:31:43 +0200
+
+libcmis (0.4.1-5) unstable; urgency=low
+
+  * upload to unstable 
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 06 May 2014 20:21:12 +0200
+
+libcmis (0.4.1-4) experimental; urgency=low
+
+  * apply patch from Adam Concrad to fix int/bool confusion that
+    leads to the test suite failing on all big-endian architectures.
+    (closes: #737807)  
+
+ -- Rene Engelhard <rene@debian.org>  Thu, 06 Feb 2014 07:12:43 +0100
+
+libcmis (0.4.1-3) experimental; urgency=low
+
+  * actually use buildflags.mk's CXXFLAGS everywhere, not only on arm,
+    and fix logic...
+
+ -- Rene Engelhard <rene@debian.org>  Wed, 04 Dec 2013 13:46:56 +0100
+
+libcmis (0.4.1-2) experimental; urgency=low
+
+  * explicitely mention Cedric Bosdonnat and Cao Cuong Ngo
+    in debian/copyright
+  * include /usr/share/dpkg/{architecture,buildflags}.mk and
+    build with -O0 on arm to hack around API test crash (closes: #731116)
+
+ -- Rene Engelhard <rene@debian.org>  Wed, 04 Dec 2013 09:23:49 +0000
+
+libcmis (0.4.1-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Rene Engelhard <rene@debian.org>  Mon, 26 Aug 2013 19:55:53 +0200
+
+libcmis (0.3.1-3) unstable; urgency=low
+
+  * build with --disable-werror (closes: #707448) 
+
+ -- Rene Engelhard <rene@debian.org>  Thu, 09 May 2013 11:26:12 +0200
+
+libcmis (0.3.1-2) unstable; urgency=low
+
+  * upload to unstable 
+
+ -- Rene Engelhard <rene@debian.org>  Fri, 19 Apr 2013 00:24:14 +0200
+
+libcmis (0.3.1-1) experimental; urgency=low
+
+  * New upstream release
+  * build (and run) unit tests, now that we can disable the "long" tests
+  * update description (closes: #666669), Homepage:/Source:
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 05 Feb 2013 19:21:04 +0100
+
+libcmis (0.2.3-1) experimental; urgency=low
+
+  * New upstream release
+  * add depends on libcurl4-gnutls-dev, libxml2-dev to libcmis-dev
+
+ -- Rene Engelhard <rene@debian.org>  Tue, 26 Jun 2012 13:38:24 +0200
+
+libcmis (0.2.2-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Rene Engelhard <rene@debian.org>  Mon, 04 Jun 2012 19:42:40 +0200
+
+libcmis (0.1.0-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Rene Engelhard <rene@debian.org>  Sat, 24 Dec 2011 14:23:23 +0000

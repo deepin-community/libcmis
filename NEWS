@@ -1,0 +1,96 @@
+0.1.0
+
+  * Generic
+    * Anonymous connection
+  * AtomPub binding
+    * Get the content hierarchy using the down relations
+    * Get the content of a document
+    * Query nodes by ID
+
+0.2.0
+
+  * Generic
+    * Support for authentication in the API
+    * Callback for providing interactive authentication
+    * Added API to create documents and folders
+    * Added API to delete documents and folders
+  * AtomPub binding
+    * Handle all the authentication methods that can be handled by
+      libcurl like Basic, NTLM...
+    * Decode base64 encoded content sent by SharePoint
+    * Set the content of a document
+    * Query nodes by path
+    * Get the allowable actions for a node
+    * Object properties can be updated
+    * Query object types
+    * Creation of folders and documents
+    * Deletion of folders and documents
+
+0.2.1
+
+  * Fixed documentation distribution
+
+0.2.2
+
+  * Fixed soname for the library
+  * Allow building against libcurl 7.13.1
+
+0.2.3
+
+  * Fixed SharePoint support
+  * Conditional build of man page
+
+0.3.0
+
+  * Added Document::checkOut(), Document::cancelCheckout() and Document::checkIn()
+  * Added Object::move( ) -- Grau Data
+  * Fixes for xcmis and cloudoku.com -- Grau Data
+  * Added Document::getAllVersions( )
+  * WebService binding implementation
+  * Session factory automatically detects which binding to use
+  * C wrapper API
+  * Unit tests are now split between quick ones and the ones needing a CMIS server
+
+0.4.0
+
+  * Support for Google Drive protocol as a binding
+  * Support for Alfresco in the cloud
+  * Added OAuth2 authentication support
+  * Added API to configure HTTP proxy
+  * Handle invalid SSL certificate problems
+  * Added API for renditions
+  * Moved the CMIS Atom binding unit tests to use libcurl mockup
+  * Added repository capabilities support (still missing
+    capabilityCreatablePropertyTypes and capabilityNewTypeSettableAttributes)
+
+0.5.0
+
+  * Completely removed the dependency on InMemory server for unit tests
+  * Minimized the number of HTTP requests sent by SessionFactory::createSession
+  * Added Session::getBaseTypes()
+
+0.5.1
+
+  * Fixed a crash when server response did not contain cmis:baseTypeId
+    property (tdf#90351)
+  * Removed the requirement for non-empty password when using HTTP
+    authentication credentials
+  * Fixed build with boost 1.60 and gcc 5
+  * Fixed a few problems found by Coverity
+  * Fixed a busload of memory leaks
+
+0.5.2
+
+  * Fixed Google Drive login, broken by Google's new 2-page login sequence
+  * Added support for Google Drive two-factor authentication
+  * Fixed access to SharePoint root folder (tdf#101385)
+  * Limited the maximal number of redirections to 20 (rhbz#1410197)
+  * Switched library implementation to C++11 (the API remains
+    C++98-compatible)
+  * Fixed build with boost >= 1.68.0 (#19)
+  * Fixed encoding of OAuth2 credentials
+  * Dropped cppcheck run from "make check". A new "make cppcheck" target
+    was created for it
+  * Added proper API symbol exporting
+  * Speeded up building of tests a bit
+  * Fixed a few issues found by coverity and cppcheck
