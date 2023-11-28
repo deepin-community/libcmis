@@ -131,7 +131,7 @@ SoapFaultDetailPtr CmisSoapFaultDetail::create( xmlNodePtr node )
     return SoapFaultDetailPtr( new CmisSoapFaultDetail( node ) );
 }
 
-void GetRepositories::toXml( xmlTextWriterPtr writer )
+void GetRepositoriesRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getRepositories" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -177,7 +177,7 @@ SoapResponsePtr GetRepositoriesResponse::create( xmlNodePtr node, RelatedMultipa
     return SoapResponsePtr( response );
 }
 
-void GetRepositoryInfo::toXml( xmlTextWriterPtr writer )
+void GetRepositoryInfoRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getRepositoryInfo" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -204,7 +204,7 @@ SoapResponsePtr GetRepositoryInfoResponse::create( xmlNodePtr node, RelatedMulti
     return SoapResponsePtr( response );
 }
 
-void GetTypeDefinition::toXml( xmlTextWriterPtr writer )
+void GetTypeDefinitionRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getTypeDefinition" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -233,7 +233,7 @@ SoapResponsePtr GetTypeDefinitionResponse::create( xmlNodePtr node, RelatedMulti
     return SoapResponsePtr( response );
 }
 
-void GetTypeChildren::toXml( xmlTextWriterPtr writer )
+void GetTypeChildrenRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getTypeChildren" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -269,7 +269,7 @@ SoapResponsePtr GetTypeChildrenResponse::create( xmlNodePtr node, RelatedMultipa
     return SoapResponsePtr( response );
 }
 
-void GetObject::toXml( xmlTextWriterPtr writer )
+void GetObjectRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getObject" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -317,7 +317,7 @@ SoapResponsePtr GetObjectResponse::create( xmlNodePtr node, RelatedMultipart&, S
     return SoapResponsePtr( response );
 }
 
-void GetObjectByPath::toXml( xmlTextWriterPtr writer )
+void GetObjectByPathRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getObjectByPath" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -331,7 +331,7 @@ void GetObjectByPath::toXml( xmlTextWriterPtr writer )
     xmlTextWriterEndElement( writer );
 }
 
-void UpdateProperties::toXml( xmlTextWriterPtr writer )
+void UpdatePropertiesRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:updateProperties" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -378,7 +378,7 @@ SoapResponsePtr UpdatePropertiesResponse::create( xmlNodePtr node, RelatedMultip
     return SoapResponsePtr( response );
 }
 
-void DeleteObject::toXml( xmlTextWriterPtr writer )
+void DeleteObjectRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:deleteObject" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -395,7 +395,7 @@ void DeleteObject::toXml( xmlTextWriterPtr writer )
     xmlTextWriterEndElement( writer );
 }
 
-void DeleteTree::toXml( xmlTextWriterPtr writer )
+void DeleteTreeRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:deleteTree" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -462,7 +462,7 @@ SoapResponsePtr DeleteTreeResponse::create( xmlNodePtr node, RelatedMultipart&, 
     return SoapResponsePtr( response );
 }
 
-void MoveObject::toXml( xmlTextWriterPtr writer )
+void MoveObjectRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:moveObject" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -476,7 +476,7 @@ void MoveObject::toXml( xmlTextWriterPtr writer )
     xmlTextWriterEndElement( writer );
 }
 
-void GetContentStream::toXml( xmlTextWriterPtr writer )
+void GetContentStreamRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getContentStream" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -516,7 +516,7 @@ SoapResponsePtr GetContentStreamResponse::create( xmlNodePtr node, RelatedMultip
     return SoapResponsePtr( response );
 }
 
-void GetObjectParents::toXml( xmlTextWriterPtr writer )
+void GetObjectParentsRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getObjectParents" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -558,7 +558,7 @@ SoapResponsePtr GetObjectParentsResponse::create( xmlNodePtr node, RelatedMultip
     return SoapResponsePtr( response );
 }
 
-void GetChildren::toXml( xmlTextWriterPtr writer )
+void GetChildrenRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getChildren" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -615,7 +615,7 @@ SoapResponsePtr GetChildrenResponse::create( xmlNodePtr node, RelatedMultipart&,
     return SoapResponsePtr( response );
 }
 
-void CreateFolder::toXml( xmlTextWriterPtr writer )
+void CreateFolderRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:createFolder" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -658,7 +658,7 @@ SoapResponsePtr CreateFolderResponse::create( xmlNodePtr node, RelatedMultipart&
     return SoapResponsePtr( response );
 }
 
-void CreateDocument::toXml( xmlTextWriterPtr writer )
+void CreateDocumentRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:createDocument" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -684,7 +684,7 @@ void CreateDocument::toXml( xmlTextWriterPtr writer )
     xmlTextWriterEndElement( writer );
 }
 
-void SetContentStream::toXml( xmlTextWriterPtr writer )
+void SetContentStreamRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:setContentStream" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -709,7 +709,7 @@ void SetContentStream::toXml( xmlTextWriterPtr writer )
     xmlTextWriterEndElement( writer );
 }
 
-void GetRenditions::toXml( xmlTextWriterPtr writer )
+void GetRenditionsRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getRenditions" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -738,7 +738,7 @@ SoapResponsePtr GetRenditionsResponse::create( xmlNodePtr node, RelatedMultipart
     return SoapResponsePtr( response );
 }
 
-void CheckOut::toXml( xmlTextWriterPtr writer )
+void CheckOutRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:checkOut" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -771,7 +771,7 @@ SoapResponsePtr CheckOutResponse::create( xmlNodePtr node, RelatedMultipart&, So
     return SoapResponsePtr( response );
 }
 
-void CancelCheckOut::toXml( xmlTextWriterPtr writer )
+void CancelCheckOutRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:cancelCheckOut" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -783,7 +783,7 @@ void CancelCheckOut::toXml( xmlTextWriterPtr writer )
     xmlTextWriterEndElement( writer );
 }
 
-void CheckIn::toXml( xmlTextWriterPtr writer )
+void CheckInRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:checkIn" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );
@@ -842,7 +842,7 @@ SoapResponsePtr CheckInResponse::create( xmlNodePtr node, RelatedMultipart&, Soa
     return SoapResponsePtr( response );
 }
 
-void GetAllVersions::toXml( xmlTextWriterPtr writer )
+void GetAllVersionsRequest::toXml( xmlTextWriterPtr writer )
 {
     xmlTextWriterStartElement( writer, BAD_CAST( "cmism:getAllVersions" ) );
     xmlTextWriterWriteAttribute( writer, BAD_CAST( "xmlns:cmis" ), BAD_CAST( NS_CMIS_URL ) );

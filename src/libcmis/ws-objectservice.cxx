@@ -71,7 +71,7 @@ libcmis::ObjectPtr ObjectService::getObject( string repoId, string id )
 {
     libcmis::ObjectPtr object;
 
-    class GetObject request( repoId, id );
+    GetObjectRequest request( repoId, id );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -88,7 +88,7 @@ libcmis::ObjectPtr ObjectService::getObjectByPath( string repoId, string path )
 {
     libcmis::ObjectPtr object;
 
-    GetObjectByPath request( repoId, path );
+    GetObjectByPathRequest request( repoId, path );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -106,7 +106,7 @@ vector< libcmis::RenditionPtr > ObjectService::getRenditions(
 {
     vector< libcmis::RenditionPtr > renditions;
 
-    GetRenditions request( repoId, objectId, filter );
+    GetRenditionsRequest request( repoId, objectId, filter );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -128,7 +128,7 @@ libcmis::ObjectPtr ObjectService::updateProperties(
 {
     libcmis::ObjectPtr object;
 
-    UpdateProperties request( repoId, objectId, properties, changeToken );
+    UpdatePropertiesRequest request( repoId, objectId, properties, changeToken );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -146,7 +146,7 @@ libcmis::ObjectPtr ObjectService::updateProperties(
 
 void ObjectService::deleteObject( string repoId, string id, bool allVersions )
 {
-    class DeleteObject request( repoId, id, allVersions );
+    DeleteObjectRequest request( repoId, id, allVersions );
     m_session->soapRequest( m_url, request );
 }
         
@@ -155,7 +155,7 @@ vector< string > ObjectService::deleteTree( std::string repoId, std::string fold
 {
     vector< string > failedIds;
 
-    DeleteTree request( repoId, folderId, allVersions, unfile, continueOnFailure );
+    DeleteTreeRequest request( repoId, folderId, allVersions, unfile, continueOnFailure );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -170,7 +170,7 @@ vector< string > ObjectService::deleteTree( std::string repoId, std::string fold
 
 void ObjectService::move( string repoId, string objectId, string destId, string srcId )
 {
-    MoveObject request( repoId, objectId, destId, srcId );
+    MoveObjectRequest request( repoId, objectId, destId, srcId );
     m_session->soapRequest( m_url, request );
 }
 
@@ -178,7 +178,7 @@ boost::shared_ptr< istream > ObjectService::getContentStream( string repoId, str
 {
     boost::shared_ptr< istream > stream;
 
-    GetContentStream request( repoId, objectId );
+    GetContentStreamRequest request( repoId, objectId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -194,7 +194,7 @@ boost::shared_ptr< istream > ObjectService::getContentStream( string repoId, str
 void ObjectService::setContentStream( std::string repoId, std::string objectId, bool overwrite, std::string changeToken,
         boost::shared_ptr< std::ostream > stream, std::string contentType, std::string fileName )
 {
-    SetContentStream request( repoId, objectId, overwrite, changeToken, stream, contentType, fileName );
+    SetContentStreamRequest request( repoId, objectId, overwrite, changeToken, stream, contentType, fileName );
     m_session->soapRequest( m_url, request );
 }
 
@@ -203,7 +203,7 @@ libcmis::FolderPtr ObjectService::createFolder( string repoId, const PropertyPtr
 {
     libcmis::FolderPtr folder;
 
-    CreateFolder request( repoId, properties, folderId );
+    CreateFolderRequest request( repoId, properties, folderId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -224,7 +224,7 @@ libcmis::DocumentPtr ObjectService::createDocument( string repoId, const Propert
 {
     libcmis::DocumentPtr document;
 
-    CreateDocument request( repoId, properties, folderId, stream, contentType, fileName );
+    CreateDocumentRequest request( repoId, properties, folderId, stream, contentType, fileName );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {

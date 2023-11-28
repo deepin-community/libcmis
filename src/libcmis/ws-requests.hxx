@@ -74,11 +74,11 @@ void writeCmismStream( xmlTextWriterPtr writer, RelatedMultipart& multipart,
 
 /** getRepositories request.
   */
-class GetRepositories : public SoapRequest
+class GetRepositoriesRequest : public SoapRequest
 {
     public:
-        GetRepositories( ) { };
-        ~GetRepositories( ) { };
+        GetRepositoriesRequest( ) { };
+        ~GetRepositoriesRequest( ) { };
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -101,14 +101,14 @@ class GetRepositoriesResponse : public SoapResponse
         std::map< std::string, std::string > getRepositories( ) { return m_repositories; }
 };
 
-class GetRepositoryInfo : public SoapRequest
+class GetRepositoryInfoRequest : public SoapRequest
 {
     private:
         std::string m_id;
 
     public:
-        GetRepositoryInfo( std::string id ) : m_id( id ) { };
-        ~GetRepositoryInfo( ) { };
+        GetRepositoryInfoRequest( std::string id ) : m_id( id ) { };
+        ~GetRepositoryInfoRequest( ) { };
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -131,20 +131,20 @@ class GetRepositoryInfoResponse : public SoapResponse
         libcmis::RepositoryPtr getRepository( ) { return m_repository; }
 };
 
-class GetTypeDefinition : public SoapRequest
+class GetTypeDefinitionRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_typeId;
 
     public:
-        GetTypeDefinition( std::string repoId, std::string typeId ) :
+        GetTypeDefinitionRequest( std::string repoId, std::string typeId ) :
             m_repositoryId( repoId ),
             m_typeId( typeId )
         {
         }
 
-        ~GetTypeDefinition( ) { }
+        ~GetTypeDefinitionRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -167,20 +167,20 @@ class GetTypeDefinitionResponse : public SoapResponse
         libcmis::ObjectTypePtr getType( ) { return m_type; }
 };
 
-class GetTypeChildren : public SoapRequest
+class GetTypeChildrenRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_typeId;
 
     public:
-        GetTypeChildren( std::string repoId, std::string typeId ) :
+        GetTypeChildrenRequest( std::string repoId, std::string typeId ) :
             m_repositoryId( repoId ),
             m_typeId( typeId )
         {
         }
 
-        ~GetTypeChildren( ) { }
+        ~GetTypeChildrenRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -203,21 +203,20 @@ class GetTypeChildrenResponse : public SoapResponse
         std::vector< libcmis::ObjectTypePtr > getChildren( ) { return m_children; }
 };
 
-#undef GetObject
-class GetObject : public SoapRequest
+class GetObjectRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_id;
 
     public:
-        GetObject( std::string repoId, std::string id ) :
+        GetObjectRequest( std::string repoId, std::string id ) :
             m_repositoryId( repoId ),
             m_id( id )
         {
         }
 
-        ~GetObject( ) { }
+        ~GetObjectRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -240,25 +239,25 @@ class GetObjectResponse : public SoapResponse
         libcmis::ObjectPtr getObject( ) { return m_object; }
 };
 
-class GetObjectByPath : public SoapRequest
+class GetObjectByPathRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_path;
 
     public:
-        GetObjectByPath( std::string repoId, std::string path ) :
+        GetObjectByPathRequest( std::string repoId, std::string path ) :
             m_repositoryId( repoId ),
             m_path( path )
         {
         }
 
-        ~GetObjectByPath( ) { }
+        ~GetObjectByPathRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
 
-class UpdateProperties : public SoapRequest
+class UpdatePropertiesRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -267,7 +266,7 @@ class UpdateProperties : public SoapRequest
         std::string m_changeToken;
 
     public:
-        UpdateProperties( std::string repoId, std::string objectId,
+        UpdatePropertiesRequest( std::string repoId, std::string objectId,
                 const std::map< std::string, libcmis::PropertyPtr >& properties,
                 std::string changeToken ) :
             m_repositoryId( repoId ),
@@ -277,7 +276,7 @@ class UpdateProperties : public SoapRequest
         {
         }
 
-        ~UpdateProperties( ) { }
+        ~UpdatePropertiesRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -300,7 +299,7 @@ class UpdatePropertiesResponse : public SoapResponse
         std::string getObjectId( ) { return m_id; }
 };
 
-class DeleteObject : public SoapRequest
+class DeleteObjectRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -308,19 +307,19 @@ class DeleteObject : public SoapRequest
         bool m_allVersions;
 
     public:
-        DeleteObject( std::string repoId, std::string objectId, bool allVersions ) :
+        DeleteObjectRequest( std::string repoId, std::string objectId, bool allVersions ) :
             m_repositoryId( repoId ),
             m_objectId( objectId ),
             m_allVersions( allVersions )
         {
         }
 
-        ~DeleteObject( ) { }
+        ~DeleteObjectRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
 
-class DeleteTree : public SoapRequest
+class DeleteTreeRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -330,7 +329,7 @@ class DeleteTree : public SoapRequest
         bool m_continueOnFailure;
 
     public:
-        DeleteTree( std::string repoId,
+        DeleteTreeRequest( std::string repoId,
                 std::string folderId,
                 bool allVersions,
                 libcmis::UnfileObjects::Type unfile,
@@ -343,7 +342,7 @@ class DeleteTree : public SoapRequest
         {
         }
 
-        ~DeleteTree( ) { }
+        ~DeleteTreeRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -366,7 +365,7 @@ class DeleteTreeResponse : public SoapResponse
         std::vector< std::string > getFailedIds( ) { return m_failedIds; }
 };
 
-class MoveObject : public SoapRequest
+class MoveObjectRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -375,7 +374,7 @@ class MoveObject : public SoapRequest
         std::string m_srcId;
 
     public:
-        MoveObject( std::string repoId, std::string objectId, std::string destId, std::string srcId ) :
+        MoveObjectRequest( std::string repoId, std::string objectId, std::string destId, std::string srcId ) :
             m_repositoryId( repoId ),
             m_objectId( objectId ),
             m_destId( destId ),
@@ -383,25 +382,25 @@ class MoveObject : public SoapRequest
         {
         }
 
-        ~MoveObject( ) { }
+        ~MoveObjectRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
 
-class GetContentStream : public SoapRequest
+class GetContentStreamRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_objectId;
 
     public:
-        GetContentStream( std::string repoId, std::string objectId ) :
+        GetContentStreamRequest( std::string repoId, std::string objectId ) :
             m_repositoryId( repoId ),
             m_objectId( objectId )
         {
         }
 
-        ~GetContentStream( ) { }
+        ~GetContentStreamRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -424,21 +423,21 @@ class GetContentStreamResponse : public SoapResponse
         boost::shared_ptr< std::istream> getStream( ) { return m_stream; }
 };
 
-class GetObjectParents : public SoapRequest
+class GetObjectParentsRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_objectId;
 
     public:
-        GetObjectParents( std::string repoId,
+        GetObjectParentsRequest( std::string repoId,
                 std::string objectId ) :
             m_repositoryId( repoId ),
             m_objectId( objectId )
         {
         }
 
-        ~GetObjectParents( ) { }
+        ~GetObjectParentsRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -461,21 +460,21 @@ class GetObjectParentsResponse : public SoapResponse
         std::vector< libcmis::FolderPtr > getParents( ) { return m_parents; }
 };
 
-class GetChildren : public SoapRequest
+class GetChildrenRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_folderId;
 
     public:
-        GetChildren( std::string repoId,
+        GetChildrenRequest( std::string repoId,
                 std::string folderId ) :
             m_repositoryId( repoId ),
             m_folderId( folderId )
         {
         }
 
-        ~GetChildren( ) { }
+        ~GetChildrenRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -498,7 +497,7 @@ class GetChildrenResponse : public SoapResponse
         std::vector< libcmis::ObjectPtr > getChildren( ) { return m_children; }
 };
 
-class CreateFolder : public SoapRequest
+class CreateFolderRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -506,7 +505,7 @@ class CreateFolder : public SoapRequest
         std::string m_folderId;
 
     public:
-        CreateFolder( std::string repoId,
+        CreateFolderRequest( std::string repoId,
                 const std::map< std::string, libcmis::PropertyPtr >& properties,
                 std::string folderId ) :
             m_repositoryId( repoId ),
@@ -515,7 +514,7 @@ class CreateFolder : public SoapRequest
         {
         }
 
-        ~CreateFolder( ) { }
+        ~CreateFolderRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -538,7 +537,7 @@ class CreateFolderResponse : public SoapResponse
         std::string getObjectId( ) { return m_id; }
 };
 
-class CreateDocument : public SoapRequest
+class CreateDocumentRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -549,7 +548,7 @@ class CreateDocument : public SoapRequest
         std::string m_filename;
 
     public:
-        CreateDocument( std::string repoId,
+        CreateDocumentRequest( std::string repoId,
                 const std::map< std::string, libcmis::PropertyPtr >& properties,
                 std::string folderId, boost::shared_ptr< std::ostream > stream,
                 std::string contentType,
@@ -563,12 +562,12 @@ class CreateDocument : public SoapRequest
         {
         }
 
-        ~CreateDocument( ) { }
+        ~CreateDocumentRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
 
-class SetContentStream : public SoapRequest
+class SetContentStreamRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -580,7 +579,7 @@ class SetContentStream : public SoapRequest
         std::string m_filename;
 
     public:
-        SetContentStream( std::string repoId,
+        SetContentStreamRequest( std::string repoId,
                 std::string objectId,
                 bool overwrite,
                 std::string changeToken,
@@ -597,12 +596,12 @@ class SetContentStream : public SoapRequest
         {
         }
 
-        ~SetContentStream( ) { }
+        ~SetContentStreamRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
 
-class GetRenditions : public SoapRequest
+class GetRenditionsRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -610,14 +609,14 @@ class GetRenditions : public SoapRequest
         std::string m_filter;
 
     public:
-        GetRenditions( std::string repoId, std::string objectId, std::string filter ) :
+        GetRenditionsRequest( std::string repoId, std::string objectId, std::string filter ) :
             m_repositoryId( repoId ),
             m_objectId( objectId ),
             m_filter( filter )
         {
         }
 
-        ~GetRenditions( ) { }
+        ~GetRenditionsRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -640,21 +639,21 @@ class GetRenditionsResponse : public SoapResponse
         std::vector< libcmis::RenditionPtr > getRenditions( ) { return m_renditions; }
 };
 
-class CheckOut : public SoapRequest
+class CheckOutRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_objectId;
 
     public:
-        CheckOut( std::string repoId,
+        CheckOutRequest( std::string repoId,
                 std::string objectId ) :
             m_repositoryId( repoId ),
             m_objectId( objectId )
         {
         }
 
-        ~CheckOut( ) { }
+        ~CheckOutRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -677,26 +676,26 @@ class CheckOutResponse : public SoapResponse
         std::string getObjectId( ) { return m_objectId; }
 };
 
-class CancelCheckOut : public SoapRequest
+class CancelCheckOutRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_objectId;
 
     public:
-        CancelCheckOut( std::string repoId,
+        CancelCheckOutRequest( std::string repoId,
                 std::string objectId ) :
             m_repositoryId( repoId ),
             m_objectId( objectId )
         {
         }
 
-        ~CancelCheckOut( ) { }
+        ~CancelCheckOutRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
 
-class CheckIn : public SoapRequest
+class CheckInRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
@@ -709,7 +708,7 @@ class CheckIn : public SoapRequest
         std::string m_comment;
 
     public:
-        CheckIn( std::string repoId,
+        CheckInRequest( std::string repoId,
                 std::string objectId, bool isMajor,
                 const std::map< std::string, libcmis::PropertyPtr >& properties,
                 boost::shared_ptr< std::ostream > stream,
@@ -725,7 +724,7 @@ class CheckIn : public SoapRequest
         {
         }
 
-        ~CheckIn( ) { }
+        ~CheckInRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };
@@ -748,20 +747,20 @@ class CheckInResponse : public SoapResponse
         std::string getObjectId( ) { return m_objectId; }
 };
 
-class GetAllVersions : public SoapRequest
+class GetAllVersionsRequest : public SoapRequest
 {
     private:
         std::string m_repositoryId;
         std::string m_objectId;
 
     public:
-        GetAllVersions( std::string repoId, std::string objectId ) :
+        GetAllVersionsRequest( std::string repoId, std::string objectId ) :
             m_repositoryId( repoId ),
             m_objectId( objectId )
         {
         }
 
-        ~GetAllVersions( ) { }
+        ~GetAllVersionsRequest( ) { }
 
         void toXml( xmlTextWriterPtr writer );
 };

@@ -38,6 +38,7 @@ using namespace std;
 
 namespace libcmis
 {
+    CurlInitProtocolsFunction g_CurlInitProtocolsFunction = 0;
     AuthProviderPtr SessionFactory::s_authProvider;
     OAuth2AuthCodeProvider SessionFactory::s_oauth2AuthCodeProvider;
 
@@ -47,6 +48,11 @@ namespace libcmis
     string SessionFactory::s_proxyPass;
 
     CertValidationHandlerPtr SessionFactory::s_certValidationHandler;
+
+    void SessionFactory::setCurlInitProtocolsFunction(CurlInitProtocolsFunction const initProtocols)
+    {
+        g_CurlInitProtocolsFunction = initProtocols;
+    }
 
     void SessionFactory::setProxySettings( string proxy, string noProxy,
             string proxyUser, string proxyPass )
@@ -66,12 +72,12 @@ namespace libcmis
         if ( !bindingUrl.empty( ) )
         {
             // Try the special cases based on the binding URL
-            if ( bindingUrl == "https://www.googleapis.com/drive/v2" )
+            if ( bindingUrl == "https://www.googleapis.com/drive/v3" )
             {
                 session = new GDriveSession( bindingUrl, username, password,
                                              oauth2, verbose );
             }
-            else if ( bindingUrl == "https://apis.live.net/v5.0" )
+            else if ( bindingUrl == "https://graph.microsoft.com/v1.0" )
             {
                 session = new OneDriveSession( bindingUrl, username, password,
                                                oauth2, verbose);
@@ -81,7 +87,8 @@ namespace libcmis
                 libcmis::HttpResponsePtr response;
                 boost::shared_ptr< HttpSession> httpSession(
                         new HttpSession( username, password,
-                                         noSslCheck, oauth2, verbose ) );
+                                         noSslCheck, oauth2, verbose,
+                                         g_CurlInitProtocolsFunction) );
 
                 try
                 {

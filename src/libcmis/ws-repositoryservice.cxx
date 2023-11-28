@@ -70,7 +70,7 @@ map< string, string > RepositoryService::getRepositories( )
 {
     map< string, string > repositories;
 
-    GetRepositories request;
+    GetRepositoriesRequest request;
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
 
     if ( responses.size() == 1 )
@@ -88,7 +88,7 @@ libcmis::RepositoryPtr RepositoryService::getRepositoryInfo( string id )
 {
     libcmis::RepositoryPtr repository;
 
-    GetRepositoryInfo request( id );
+    GetRepositoryInfoRequest request( id );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -105,7 +105,7 @@ libcmis::ObjectTypePtr RepositoryService::getTypeDefinition( string repoId, stri
 {
     libcmis::ObjectTypePtr type;
 
-    GetTypeDefinition request( repoId, typeId );
+    GetTypeDefinitionRequest request( repoId, typeId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -122,7 +122,7 @@ vector< libcmis::ObjectTypePtr > RepositoryService::getTypeChildren( string repo
 {
     vector< libcmis::ObjectTypePtr > children;
 
-    GetTypeChildren request( repoId, typeId );
+    GetTypeChildrenRequest request( repoId, typeId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
