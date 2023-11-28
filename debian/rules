@@ -27,7 +27,7 @@ override_dh_autoreconf:
 	dh_autoreconf
 	
 override_dh_clean:
-	rm -f libcmis-0.5.pc
+	rm -f libcmis-0.6.pc
 	rm -f cmis-client.1
 	rm -f README
 	dh_clean

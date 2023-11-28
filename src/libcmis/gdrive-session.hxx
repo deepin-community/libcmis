@@ -41,8 +41,6 @@ class GDriveSession : public BaseSession
                        libcmis::OAuth2DataPtr oauth2,
                        bool verbose = false );
 
-        GDriveSession( const GDriveSession& copy );
-
         ~GDriveSession ( );
 
         virtual libcmis::RepositoryPtr getRepository( );
@@ -57,8 +55,18 @@ class GDriveSession : public BaseSession
 
         virtual std::vector< libcmis::ObjectTypePtr > getBaseTypes( );
 
+        virtual libcmis::FolderPtr getRootFolder();
+
+        virtual std::string getRefreshToken();
+
     private:
         GDriveSession( );
+        GDriveSession( const GDriveSession& copy ) = delete;
+        GDriveSession& operator=( const GDriveSession& copy ) = delete;
+
+        virtual void setOAuth2Data( libcmis::OAuth2DataPtr oauth2 );
+
+        void oauth2Authenticate( );
 };
 
 #endif /* _GDRIVE_SESSION_HXX_ */

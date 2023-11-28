@@ -71,7 +71,7 @@ libcmis::DocumentPtr VersioningService::checkOut( string repoId, string document
 {
     libcmis::DocumentPtr pwc;
 
-    CheckOut request( repoId, documentId );
+    CheckOutRequest request( repoId, documentId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -90,7 +90,7 @@ libcmis::DocumentPtr VersioningService::checkOut( string repoId, string document
 
 void VersioningService::cancelCheckOut( string repoId, string documentId )
 {
-    CancelCheckOut request( repoId, documentId );
+    CancelCheckOutRequest request( repoId, documentId );
     m_session->soapRequest( m_url, request );
 }
 
@@ -101,7 +101,7 @@ libcmis::DocumentPtr VersioningService::checkIn( string repoId, string objectId,
 {
     libcmis::DocumentPtr newVersion;
 
-    CheckIn request( repoId, objectId, isMajor, properties, stream, contentType, fileName, comment );
+    CheckInRequest request( repoId, objectId, isMajor, properties, stream, contentType, fileName, comment );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -122,7 +122,7 @@ vector< libcmis::DocumentPtr > VersioningService::getAllVersions( string repoId,
 {
     vector< libcmis::DocumentPtr > versions;
 
-    GetAllVersions request( repoId, objectId );
+    GetAllVersionsRequest request( repoId, objectId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {

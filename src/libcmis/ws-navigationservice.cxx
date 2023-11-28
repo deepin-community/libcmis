@@ -70,7 +70,7 @@ vector< libcmis::FolderPtr > NavigationService::getObjectParents( std::string re
 {
     vector< libcmis::FolderPtr > parents;
 
-    GetObjectParents request( repoId, objectId );
+    GetObjectParentsRequest request( repoId, objectId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {
@@ -87,7 +87,7 @@ vector< libcmis::ObjectPtr > NavigationService::getChildren( string repoId, stri
 {
     vector< libcmis::ObjectPtr > children;
 
-    GetChildren request( repoId, folderId );
+    GetChildrenRequest request( repoId, folderId );
     vector< SoapResponsePtr > responses = m_session->soapRequest( m_url, request );
     if ( responses.size( ) == 1 )
     {

@@ -31,6 +31,7 @@
 #include <cctype>
 #include <memory>
 #include <string>
+#include <assert.h>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -83,6 +84,7 @@ namespace
         return is.gcount( ) / size;
     }
 
+#if (LIBCURL_VERSION_MAJOR < 7) || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR < 85)
     curlioerr lcl_ioctlStream( CURL* /*handle*/, int cmd, void* data )
     {
         curlioerr errCode = CURLIOE_OK;
@@ -109,6 +111,28 @@ namespace
         }
         return errCode;
     }
+#endif
+
+    int lcl_seekStream(void* data, curl_off_t offset, int origin)
+    {
+        std::ios_base::seekdir dir = {};
+        switch (origin)
+        {
+            case SEEK_SET: dir = std::ios_base::beg; break;
+            case SEEK_CUR: dir = std::ios_base::cur; break;
+            case SEEK_END: dir = std::ios_base::end; break;
+            default: assert(false); break;
+        }
+        istream& is = *(static_cast<istream*>(data));
+        is.clear();
+        is.seekg(offset, dir);
+        if (!is.good())
+        {
+            fprintf(stderr, "rewind failed\n");
+            return CURL_SEEKFUNC_FAIL;
+        }
+        return CURL_SEEKFUNC_OK;
+    }
 
     template<typename T>
     class ScopeGuard
@@ -133,8 +157,10 @@ namespace
 }
 
 HttpSession::HttpSession( string username, string password, bool noSslCheck,
-                          libcmis::OAuth2DataPtr oauth2, bool verbose ) :
+                          libcmis::OAuth2DataPtr oauth2, bool verbose,
+                          libcmis::CurlInitProtocolsFunction initProtocolsFunction) :
     m_curlHandle( NULL ),
+    m_CurlInitProtocolsFunction(initProtocolsFunction),
     m_no100Continue( false ),
     m_oauth2Handler( NULL ),
     m_username( username ),
@@ -293,6 +319,99 @@ libcmis::HttpResponsePtr HttpSession::httpGetRequest( string url )
     return response;
 }
 
+libcmis::HttpResponsePtr HttpSession::httpPatchRequest( string url, istream& is, vector< string > headers )
+{
+    checkOAuth2( url );
+
+    // Duplicate istream in case we need to retry
+    string isStr( static_cast< stringstream const&>( stringstream( ) << is.rdbuf( ) ).str( ) );
+
+    istringstream isOriginal( isStr ), isBackup( isStr );
+
+    // Reset the handle for the request
+    curl_easy_reset( m_curlHandle );
+    initProtocols( );
+
+    libcmis::HttpResponsePtr response( new libcmis::HttpResponse( ) );
+
+    curl_easy_setopt( m_curlHandle, CURLOPT_WRITEFUNCTION, lcl_bufferData );
+    curl_easy_setopt( m_curlHandle, CURLOPT_WRITEDATA, response->getData( ).get( ) );
+
+    curl_easy_setopt( m_curlHandle, CURLOPT_HEADERFUNCTION, &lcl_getHeaders );
+    curl_easy_setopt( m_curlHandle, CURLOPT_WRITEHEADER, response.get() );
+
+    curl_easy_setopt( m_curlHandle, CURLOPT_MAXREDIRS, 20);
+
+    // Get the stream length
+    is.seekg( 0, ios::end );
+    long size = is.tellg( );
+    is.seekg( 0, ios::beg );
+    curl_easy_setopt( m_curlHandle, CURLOPT_INFILESIZE, size );
+    curl_easy_setopt( m_curlHandle, CURLOPT_READDATA, &isOriginal );
+    curl_easy_setopt( m_curlHandle, CURLOPT_READFUNCTION, lcl_readStream );
+    curl_easy_setopt( m_curlHandle, CURLOPT_UPLOAD, 1 );
+    curl_easy_setopt( m_curlHandle, CURLOPT_CUSTOMREQUEST, "PATCH" );
+#if (LIBCURL_VERSION_MAJOR > 7) || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 85)
+    curl_easy_setopt( m_curlHandle, CURLOPT_SEEKFUNCTION, lcl_seekStream );
+    curl_easy_setopt( m_curlHandle, CURLOPT_SEEKDATA, &isOriginal );
+#else
+    curl_easy_setopt( m_curlHandle, CURLOPT_IOCTLFUNCTION, lcl_ioctlStream );
+    curl_easy_setopt( m_curlHandle, CURLOPT_IOCTLDATA, &isOriginal );
+#endif
+
+    // If we know for sure that 100-Continue won't be accepted,
+    // don't even try with it to save one HTTP request.
+    if ( m_no100Continue )
+        headers.push_back( "Expect:" );
+    try
+    {
+        httpRunRequest( url, headers );
+        response->getData( )->finish();
+    }
+    catch ( const CurlException& )
+    {
+        long status = getHttpStatus( );
+        /** If we had a HTTP 417 response, this is likely to be due to some
+            HTTP 1.0 proxy / server not accepting the "Expect: 100-continue"
+            header. Try to disable this header and try again.
+        */
+        if ( status == 417 && !m_no100Continue)
+        {
+            // Remember that we don't want 100-Continue for the future requests
+            m_no100Continue = true;
+            response = httpPutRequest( url, isBackup, headers );
+        }
+
+        // If the access token is expired, we get 401 error,
+        // Need to use the refresh token to get a new one.
+        if ( status == 401 && !getRefreshToken( ).empty( ) && !m_refreshedToken )
+        {
+
+            // Refresh the token
+            oauth2Refresh();
+
+            // Resend the query
+            try
+            {
+                // Avoid infinite recursive call
+                m_refreshedToken = true;
+                response = httpPutRequest( url, isBackup, headers );
+                m_refreshedToken = false;
+            }
+            catch (const CurlException&)
+            {
+                m_refreshedToken = false;
+                throw;
+            }
+        }
+        // Has tried but failed
+        if ( ( status != 417 || m_no100Continue ) &&
+             ( status != 401 || getRefreshToken( ).empty( ) || m_refreshedToken ) ) throw;
+    }
+    m_refreshedToken = false;
+    return response;
+}
+
 libcmis::HttpResponsePtr HttpSession::httpPutRequest( string url, istream& is, vector< string > headers )
 {
     checkOAuth2( url );
@@ -324,8 +443,13 @@ libcmis::HttpResponsePtr HttpSession::httpPutRequest( string url, istream& is, v
     curl_easy_setopt( m_curlHandle, CURLOPT_READDATA, &isOriginal );
     curl_easy_setopt( m_curlHandle, CURLOPT_READFUNCTION, lcl_readStream );
     curl_easy_setopt( m_curlHandle, CURLOPT_UPLOAD, 1 );
+#if (LIBCURL_VERSION_MAJOR > 7) || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 85)
+    curl_easy_setopt( m_curlHandle, CURLOPT_SEEKFUNCTION, lcl_seekStream );
+    curl_easy_setopt( m_curlHandle, CURLOPT_SEEKDATA, &isOriginal );
+#else
     curl_easy_setopt( m_curlHandle, CURLOPT_IOCTLFUNCTION, lcl_ioctlStream );
     curl_easy_setopt( m_curlHandle, CURLOPT_IOCTLDATA, &isOriginal );
+#endif
 
     // If we know for sure that 100-Continue won't be accepted,
     // don't even try with it to save one HTTP request.
@@ -412,8 +536,13 @@ libcmis::HttpResponsePtr HttpSession::httpPostRequest( const string& url, istrea
     curl_easy_setopt( m_curlHandle, CURLOPT_READDATA, &isOriginal );
     curl_easy_setopt( m_curlHandle, CURLOPT_READFUNCTION, lcl_readStream );
     curl_easy_setopt( m_curlHandle, CURLOPT_POST, 1 );
+#if (LIBCURL_VERSION_MAJOR > 7) || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 85)
+    curl_easy_setopt( m_curlHandle, CURLOPT_SEEKFUNCTION, lcl_seekStream );
+    curl_easy_setopt( m_curlHandle, CURLOPT_SEEKDATA, &isOriginal );
+#else
     curl_easy_setopt( m_curlHandle, CURLOPT_IOCTLFUNCTION, lcl_ioctlStream );
     curl_easy_setopt( m_curlHandle, CURLOPT_IOCTLDATA, &isOriginal );
+#endif
 
     vector< string > headers;
     headers.push_back( string( "Content-Type:" ) + contentType );
@@ -791,9 +920,19 @@ catch ( const libcmis::Exception& e )
 
 void HttpSession::initProtocols( )
 {
+#if (LIBCURL_VERSION_MAJOR > 7) || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 85)
+    auto const protocols = "https,http";
+    curl_easy_setopt(m_curlHandle, CURLOPT_PROTOCOLS_STR, protocols);
+    curl_easy_setopt(m_curlHandle, CURLOPT_REDIR_PROTOCOLS_STR, protocols);
+#else
     const unsigned long protocols = CURLPROTO_HTTP | CURLPROTO_HTTPS;
     curl_easy_setopt(m_curlHandle, CURLOPT_PROTOCOLS, protocols);
     curl_easy_setopt(m_curlHandle, CURLOPT_REDIR_PROTOCOLS, protocols);
+#endif
+    if (m_CurlInitProtocolsFunction)
+    {
+        (*m_CurlInitProtocolsFunction)(m_curlHandle);
+    }
 }
 
 const char* CurlException::what( ) const noexcept

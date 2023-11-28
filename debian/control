@@ -2,7 +2,7 @@ Source: libcmis
 Priority: optional
 Maintainer: Debian LibreOffice Maintainers <debian-openoffice@lists.debian.org>
 Uploaders: Rene Engelhard <rene@debian.org>
-Build-Depends: debhelper (>= 9), autotools-dev, libxml2-dev, libboost-dev, libboost-program-options-dev, libcurl4-gnutls-dev, libcppunit-dev (>= 1.12), docbook2x, libboost-date-time-dev, dpkg-dev (>= 1.16.1), pkg-config, dh-autoreconf, docbook-xml, dh-exec (>= 0.3)
+Build-Depends: debhelper (>= 9), autotools-dev, libxml2-dev, libboost-dev, libboost-program-options-dev, libcurl4-openssl-dev, libcppunit-dev (>= 1.12), docbook2x, libboost-date-time-dev, dpkg-dev (>= 1.16.1), pkg-config, dh-autoreconf, docbook-xml, dh-exec (>= 0.3)
 Standards-Version: 3.9.6
 Section: libs
 Homepage: https://github.com/tdf/libcmis
@@ -10,7 +10,7 @@ Homepage: https://github.com/tdf/libcmis
 Package: libcmis-dev
 Section: libdevel
 Architecture: any
-Depends: libcmis-0.5-5v5 (= ${binary:Version}), ${misc:Depends}, libboost-dev, libcurl4-gnutls-dev, libxml2-dev
+Depends: libcmis-0.6-6 (= ${binary:Version}), ${misc:Depends}, libcurl4-openssl-dev, libxml2-dev
 Description: CMIS protocol client library -- development
  LibCMIS is a C++ client library for the CMIS interface.
  .
@@ -20,11 +20,10 @@ Description: CMIS protocol client library -- development
  .
  This package contains the development files (headers, ...) for libcmis.
 
-Package: libcmis-0.5-5v5
+Package: libcmis-0.6-6
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts: libcmis-0.5-5
 Description: CMIS protocol client library
  LibCMIS is a C++ client library for the CMIS interface.
  .
